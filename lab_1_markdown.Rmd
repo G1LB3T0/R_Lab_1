@@ -12,3 +12,10 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r}
 movies<-read.csv("movies_2026.csv")
 ```
+
+```{r librerias}
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+```
+
