@@ -12,5 +12,3 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r}
 movies<-read.csv("movies_2026.csv")
 ```
-
-
