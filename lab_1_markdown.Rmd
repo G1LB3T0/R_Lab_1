@@ -28,3 +28,36 @@ dim(movies)
 
 Para este primer ejercicio, utilizamos la función `dim()` para conocer el tamaño exacto de nuestra base de datos. 
 Como podemos observar en el resultado del código, el dataset tiene 19,883 filas por 28 columnas. Esto significa que contamos con información de 19,883 películas diferentes y, para cada una de ellas, tenemos 28 variables o características (como el presupuesto, el género, los ingresos, etc.) para analizar.
+
+# Ejercicio 2 - diga el tipo de cada una de las variables
+
+
+# Clasificación de Variables
+
+| Variable | Tipo |
+| :--- | :--- |
+| **originalTitle** | Cualitativa Nominal |
+| **originalLanguage** | Cualitativa Nominal |
+| **title** | Cualitativa Nominal |
+| **homePage** | Cualitativa Nominal |
+| **video** | Cualitativa Nominal |
+| **director** | Cualitativa Nominal |
+| **genres** | Cualitativa Nominal |
+| **productionCompany** | Cualitativa Nominal |
+| **productionCompanyCountry** | Cualitativa Nominal |
+| **productionCountry** | Cualitativa Nominal |
+| **actors** | Cualitativa Nominal |
+| **actorsCharacter** | Cualitativa Nominal |
+| **genresAmount** | Cuantitativa Discreta |
+| **productionCoAmount** | Cuantitativa Discreta |
+| **productionCountriesAmount** | Cuantitativa Discreta |
+| **voteCount** | Cuantitativa Discreta |
+| **actorsAmount** | Cuantitativa Discreta |
+| **castWomenAmount** | Cuantitativa Discreta |
+| **castMenAmount** | Cuantitativa Discreta |
+| **releaseYear** | Cuantitativa Discreta |
+| **runtime** | Cuantitativa Continua |
+| **voteAvg** | Cuantitativa Continua |
+| **actorsPopularity** | Cuantitativa Continua |
+| **releaseDate** | Cuantitativa Continua |
+
