@@ -398,84 +398,100 @@ para analizar.</p>
 </thead>
 <tbody>
 <tr class="odd">
+<td align="left"><strong>id</strong></td>
+<td align="left">Cualitativa Nominal</td>
+</tr>
+<tr class="even">
 <td align="left"><strong>originalTitle</strong></td>
 <td align="left">Cualitativa Nominal</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><strong>originalLanguage</strong></td>
 <td align="left">Cualitativa Nominal</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><strong>title</strong></td>
 <td align="left">Cualitativa Nominal</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><strong>homePage</strong></td>
 <td align="left">Cualitativa Nominal</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><strong>video</strong></td>
 <td align="left">Cualitativa Nominal</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><strong>director</strong></td>
 <td align="left">Cualitativa Nominal</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><strong>genres</strong></td>
 <td align="left">Cualitativa Nominal</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><strong>productionCompany</strong></td>
 <td align="left">Cualitativa Nominal</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><strong>productionCompanyCountry</strong></td>
 <td align="left">Cualitativa Nominal</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><strong>productionCountry</strong></td>
 <td align="left">Cualitativa Nominal</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><strong>actors</strong></td>
 <td align="left">Cualitativa Nominal</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><strong>actorsCharacter</strong></td>
 <td align="left">Cualitativa Nominal</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><strong>genresAmount</strong></td>
 <td align="left">Cuantitativa Discreta</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><strong>productionCoAmount</strong></td>
 <td align="left">Cuantitativa Discreta</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><strong>productionCountriesAmount</strong></td>
 <td align="left">Cuantitativa Discreta</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><strong>voteCount</strong></td>
 <td align="left">Cuantitativa Discreta</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><strong>actorsAmount</strong></td>
 <td align="left">Cuantitativa Discreta</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><strong>castWomenAmount</strong></td>
 <td align="left">Cuantitativa Discreta</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><strong>castMenAmount</strong></td>
 <td align="left">Cuantitativa Discreta</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><strong>releaseYear</strong></td>
 <td align="left">Cuantitativa Discreta</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>popularity</strong></td>
+<td align="left">Cuantitativa Continua</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>budget</strong></td>
+<td align="left">Cuantitativa Continua</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>revenue</strong></td>
+<td align="left">Cuantitativa Continua</td>
 </tr>
 <tr class="odd">
 <td align="left"><strong>runtime</strong></td>
@@ -495,6 +511,24 @@ para analizar.</p>
 </tr>
 </tbody>
 </table>
+<div id="separar-variables-cualitativas-y-cuantitativas" class="section level2">
+<h2>Separar variables cualitativas y cuantitativas</h2>
+<div id="lista-de-variables-cualitativas-nominales-y-ordinales" class="section level3">
+<h3>Lista de Variables Cualitativas (Nominales y Ordinales)</h3>
+<pre class="r"><code>movies_num &lt;- c(&quot;id&quot;, &quot;originalTitle&quot;, &quot;originalLanguage&quot;, &quot;title&quot;, &quot;homePage&quot;, 
+                   &quot;video&quot;, &quot;director&quot;, &quot;genres&quot;, &quot;productionCompany&quot;, 
+                   &quot;productionCompanyCountry&quot;, &quot;productionCountry&quot;, 
+                   &quot;actors&quot;, &quot;actorsCharacter&quot;)</code></pre>
+</div>
+<div id="lista-de-variables-cuantitativas-discretas-y-continuas" class="section level3">
+<h3>Lista de Variables Cuantitativas (Discretas y Continuas)</h3>
+<pre class="r"><code>movies_cuali &lt;- c(&quot;popularity&quot;, &quot;budget&quot;, &quot;revenue&quot;, &quot;genresAmount&quot;, 
+                    &quot;productionCoAmount&quot;, &quot;productionCountriesAmount&quot;, 
+                    &quot;voteCount&quot;, &quot;actorsAmount&quot;, &quot;castWomenAmount&quot;, 
+                    &quot;castMenAmount&quot;, &quot;releaseYear&quot;, &quot;runtime&quot;, 
+                    &quot;voteAvg&quot;, &quot;actorsPopularity&quot;, &quot;releaseDate&quot;)</code></pre>
+</div>
+</div>
 </div>
 
 

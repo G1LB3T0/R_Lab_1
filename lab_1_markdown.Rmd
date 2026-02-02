@@ -36,6 +36,7 @@ Como podemos observar en el resultado del código, el dataset tiene 19,883 filas
 
 | Variable | Tipo |
 | :--- | :--- |
+| **id** | Cualitativa Nominal |
 | **originalTitle** | Cualitativa Nominal |
 | **originalLanguage** | Cualitativa Nominal |
 | **title** | Cualitativa Nominal |
@@ -56,8 +57,33 @@ Como podemos observar en el resultado del código, el dataset tiene 19,883 filas
 | **castWomenAmount** | Cuantitativa Discreta |
 | **castMenAmount** | Cuantitativa Discreta |
 | **releaseYear** | Cuantitativa Discreta |
+| **popularity** | Cuantitativa Continua |
+| **budget** | Cuantitativa Continua |
+| **revenue** | Cuantitativa Continua |
 | **runtime** | Cuantitativa Continua |
 | **voteAvg** | Cuantitativa Continua |
 | **actorsPopularity** | Cuantitativa Continua |
 | **releaseDate** | Cuantitativa Continua |
 
+## Separar variables cualitativas y cuantitativas
+
+### Lista de Variables Cualitativas (Nominales y Ordinales)
+```{r}
+movies_num <- c("id", "originalTitle", "originalLanguage", "title", "homePage", 
+                   "video", "director", "genres", "productionCompany", 
+                   "productionCompanyCountry", "productionCountry", 
+                   "actors", "actorsCharacter")
+```
+### Lista de Variables Cuantitativas (Discretas y Continuas)
+```{r}
+movies_cuali <- c("popularity", "budget", "revenue", "genresAmount", 
+                    "productionCoAmount", "productionCountriesAmount", 
+                    "voteCount", "actorsAmount", "castWomenAmount", 
+                    "castMenAmount", "releaseYear", "runtime", 
+                    "voteAvg", "actorsPopularity", "releaseDate")
+```
+
+
+                   
+                   
+                   
