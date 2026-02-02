@@ -17,6 +17,7 @@ movies<-read.csv("movies_2026.csv")
 library(dplyr)
 library(ggplot2)
 library(tidyr)
+library(nortest)
 ```
 
 # Ejercicio 1 - Haga una exploración rápida de sus datos, para eso haga un resumen de su conjunto
@@ -69,21 +70,20 @@ Como podemos observar en el resultado del código, el dataset tiene 19,883 filas
 
 ### Lista de Variables Cualitativas (Nominales y Ordinales)
 ```{r}
-movies_num <- c("id", "originalTitle", "originalLanguage", "title", "homePage", 
+movies_cualitativas <- c("id", "originalTitle", "originalLanguage", "title", "homePage", 
                    "video", "director", "genres", "productionCompany", 
                    "productionCompanyCountry", "productionCountry", 
                    "actors", "actorsCharacter")
+
+movies_cuali <- movies[, movies_cualitativas]
 ```
 ### Lista de Variables Cuantitativas (Discretas y Continuas)
 ```{r}
-movies_cuali <- c("popularity", "budget", "revenue", "genresAmount", 
+movies_cuantitativas <- c("popularity", "budget", "revenue", "genresAmount", 
                     "productionCoAmount", "productionCountriesAmount", 
                     "voteCount", "actorsAmount", "castWomenAmount", 
                     "castMenAmount", "releaseYear", "runtime", 
                     "voteAvg", "actorsPopularity", "releaseDate")
+
+movies_cuanti <- movies[, movies_cuantitativas]
 ```
-
-
-                   
-                   
-                   

@@ -368,7 +368,8 @@ display: none;
 ## 
 ##     intersect, setdiff, setequal, union</code></pre>
 <pre class="r"><code>library(ggplot2)
-library(tidyr)</code></pre>
+library(tidyr)
+library(nortest)</code></pre>
 <div id="ejercicio-1---haga-una-exploración-rápida-de-sus-datos-para-eso-haga-un-resumen-de-su-conjunto" class="section level1">
 <h1>Ejercicio 1 - Haga una exploración rápida de sus datos, para eso
 haga un resumen de su conjunto</h1>
@@ -515,18 +516,22 @@ para analizar.</p>
 <h2>Separar variables cualitativas y cuantitativas</h2>
 <div id="lista-de-variables-cualitativas-nominales-y-ordinales" class="section level3">
 <h3>Lista de Variables Cualitativas (Nominales y Ordinales)</h3>
-<pre class="r"><code>movies_num &lt;- c(&quot;id&quot;, &quot;originalTitle&quot;, &quot;originalLanguage&quot;, &quot;title&quot;, &quot;homePage&quot;, 
+<pre class="r"><code>movies_cualitativas &lt;- c(&quot;id&quot;, &quot;originalTitle&quot;, &quot;originalLanguage&quot;, &quot;title&quot;, &quot;homePage&quot;, 
                    &quot;video&quot;, &quot;director&quot;, &quot;genres&quot;, &quot;productionCompany&quot;, 
                    &quot;productionCompanyCountry&quot;, &quot;productionCountry&quot;, 
-                   &quot;actors&quot;, &quot;actorsCharacter&quot;)</code></pre>
+                   &quot;actors&quot;, &quot;actorsCharacter&quot;)
+
+movies_cuali &lt;- movies[, movies_cualitativas]</code></pre>
 </div>
 <div id="lista-de-variables-cuantitativas-discretas-y-continuas" class="section level3">
 <h3>Lista de Variables Cuantitativas (Discretas y Continuas)</h3>
-<pre class="r"><code>movies_cuali &lt;- c(&quot;popularity&quot;, &quot;budget&quot;, &quot;revenue&quot;, &quot;genresAmount&quot;, 
+<pre class="r"><code>movies_cuantitativas &lt;- c(&quot;popularity&quot;, &quot;budget&quot;, &quot;revenue&quot;, &quot;genresAmount&quot;, 
                     &quot;productionCoAmount&quot;, &quot;productionCountriesAmount&quot;, 
                     &quot;voteCount&quot;, &quot;actorsAmount&quot;, &quot;castWomenAmount&quot;, 
                     &quot;castMenAmount&quot;, &quot;releaseYear&quot;, &quot;runtime&quot;, 
-                    &quot;voteAvg&quot;, &quot;actorsPopularity&quot;, &quot;releaseDate&quot;)</code></pre>
+                    &quot;voteAvg&quot;, &quot;actorsPopularity&quot;, &quot;releaseDate&quot;)
+
+movies_cuanti &lt;- movies[, movies_cuantitativas]</code></pre>
 </div>
 </div>
 </div>
