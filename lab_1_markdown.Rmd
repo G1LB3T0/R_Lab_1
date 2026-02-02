@@ -19,3 +19,12 @@ library(ggplot2)
 library(tidyr)
 ```
 
+# Ejercicio 1 - Haga una exploración rápida de sus datos, para eso haga un resumen de su conjunto
+de datos.
+```{r}
+# Dimensiones del DataSet
+dim(movies)
+```
+
+Para este primer ejercicio, utilizamos la función `dim()` para conocer el tamaño exacto de nuestra base de datos. 
+Como podemos observar en el resultado del código, el dataset tiene 19,883 filas por 28 columnas. Esto significa que contamos con información de 19,883 películas diferentes y, para cada una de ellas, tenemos 28 variables o características (como el presupuesto, el género, los ingresos, etc.) para analizar.
