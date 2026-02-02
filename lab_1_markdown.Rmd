@@ -87,3 +87,27 @@ movies_cuantitativas <- c("popularity", "budget", "revenue", "genresAmount",
 
 movies_cuanti <- movies[, movies_cuantitativas]
 ```
+
+
+# Ejercicio 3
+```{r}
+runtime_clean <- na.omit(movies$runtime)
+lillie.test(runtime_clean)
+
+ggplot(data.frame(runtime_clean), aes(x = runtime_clean)) +
+  geom_histogram(bins = 30, fill = "steelblue", color = "white") +
+  labs(
+    title = "Histograma de Runtime",
+    x = "Duración (minutos)",
+    y = "Frecuencia"
+  )
+
+ggplot(data.frame(runtime_clean), aes(y = runtime_clean)) +
+  geom_boxplot(fill = "tomato") +
+  labs(
+    title = "Diagrama de Bigotes de Runtime",
+    y = "Duración (minutos)"
+  )
+
+```
+
