@@ -468,8 +468,29 @@ Podemos concluir que la existencia de una página oficial se asocia con mayores 
 Asimismo, las películas que combinan video promocional y página oficial presentan la mayor popularidad promedio.
 Aunque algunos grupos presentan un número reducido de observaciones, la tendencia general sugiere que una estrategia de marketing digital más completa genera mejores resultados.
 
+
+
 # Ejercicio 4.16 - ¿La popularidad del elenco está directamente correlacionada con el éxito
 de taquilla?
+```{r}
+# Coeficiente de correlacion 
+cor_actores <- cor(movies$actorsPopularity, movies$revenue, use = "complete.obs")
+print(paste("Coeficiente de correlación:", round(cor_actores, 4)))
+
+# Grafico de dispersion
+grafico_elenco_exit <- ggplot(movies, aes(x = actorsPopularity, y = revenue)) +
+  geom_point(alpha = 0.4, color = "#FF8C00") + # Color Naranja (Dark Orange)
+  geom_smooth(method = "lm", color = "blue", se = FALSE) + # Línea de tendencia azul
+  labs(title = "¿Los actores famosos garantizan taquilla?",
+       subtitle = paste("Correlación de Pearson:", round(cor_actores, 2)),
+       x = "Popularidad del Elenco",
+       y = "Ingresos ($)") +
+  theme_minimal()
+
+print(grafico_elenco_exit)
+```
+El análisis estadístico arroja un coeficiente de correlación de Pearson de 0.05, lo cual indica una correlación nula. Contrario a la creencia popular de que el "Star Power" impulsa la taquilla, los datos de esta muestra revelan que no existe ninguna relación lineal entre la popularidad del elenco y los ingresos generados. Como se observa en el gráfico, la línea de tendencia es completamente plana (horizontal), demostrando que películas con actores de alta popularidad no recaudaron necesariamente más que aquellas con elencos desconocidos. Esto sugiere que, al menos en este conjunto de datos depurado, la fama de los actores es irrelevante para predecir el éxito financiero.
+
 
 
 
