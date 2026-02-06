@@ -254,6 +254,23 @@ La película que registra la mayor cantidad de votos en el conjunto de datos es 
 
 
 # Ejercicio 4.4 - ¿Cuál es la peor película de acuerdo a los votos de todos los usuarios?
+```{r Peor_Pelicula}
+peor_pelicula <- movies %>%
+  # Filtrar para quitar películas con 1 o 2 votos que ensucian la data
+  filter(voteCount > 20) %>% 
+  # Seleccionar solo nombre y promedio de votos (para no ver 28 columnas)
+  select(originalTitle, voteAvg, voteCount) %>%
+   # Ordenamos de MENOR a MAYOR (ascendente)
+  arrange(voteAvg) %>% 
+  # Solo ver la primera película
+  head(1)
+
+# Imprimir la tabla
+peor_pelicula
+```
+Al analizar las películas con menor calificación (aplicando un filtro de al menos 20 votos para asegurar representatividad estadística), la película "Almighty Thor" se posiciona como la peor evaluada del conjunto de datos. Con un promedio de calificación de 2.7 basado en 39 votos, esta producción refleja un rechazo contundente por parte de la audiencia. El uso del filtro fue crucial en este paso, ya que evitó que el resultado se viera sesgado por películas desconocidas o errores de captura con una única calificación de 0 o 1, permitiendo identificar una obra que realmente generó una experiencia negativa consensuada entre los espectadores.
+
+
 
 # Ejercicio 4.5 - ¿Cuántas películas se hicieron en cada año? ¿En qué año se hicieron más
 películas? Haga un gráfico de barras
