@@ -1,9 +1,14 @@
 ---
 title: "LAB1"
 author: "Grupo 4"
-date: "2026-02-02"
-output: html_document
+date: "2026-02-06"
+output: 
+  pdf_document:
+    latex_engine: xelatex
 ---
+
+#Link del repositorio: https://github.com/G1LB3T0/R_Lab_1.git
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -19,6 +24,7 @@ library(ggplot2)
 library(tidyr)
 library(nortest)
 ```
+
 
 ```{r corregir-tipos}
 movies <- movies %>%
@@ -164,23 +170,28 @@ movies |>
 ```{r}
 # Idioma original
 freq_idioma <- movies %>%
-  count(originalLanguage, sort = TRUE)
+  count(originalLanguage, sort = TRUE) %>%
+  head(10)
 
 # Video promocional
 freq_video <- movies %>%
-  count(video, sort = TRUE)
+  count(video, sort = TRUE) %>% 
+  head(10)
 
 # Géneros
 freq_generos <- movies %>%
-  count(genres, sort = TRUE)
+  count(genres, sort = TRUE) %>%
+  head(10)
 
 # País de producción
 freq_pais <- movies %>%
-  count(productionCountry, sort = TRUE)
+  count(productionCountry, sort = TRUE) %>% 
+  head(10)
 
 # País de la productora
 freq_pais_prod <- movies %>%
-  count(productionCompanyCountry, sort = TRUE)
+  count(productionCompanyCountry, sort = TRUE) %>%
+  head(10)
 
 # Directores (Top 10)
 freq_director <- movies %>%
@@ -192,6 +203,7 @@ freq_productora <- movies %>%
   count(productionCompany, sort = TRUE) %>%
   head(10)
 
+# Imprimir resultados
 freq_idioma
 freq_video
 freq_generos
@@ -304,7 +316,75 @@ El gráfico muestra la cantidad de películas producidas por año. El año que m
 principal que predomina en el conjunto de datos? Represéntelo usando un gráfico. ¿A qué
 género principal pertenecen las películas más largas?
 
+
+
+```{r}
+# --- Ejercicio 4.6: Géneros Principales y Películas Largas (CORREGIDO) ---
+
+# 1. Limpieza: Extraer género y eliminar los que queden vacíos
+movies <- movies %>%
+  mutate(mainGenre = sapply(strsplit(as.character(genres), "\\|"), "[", 1))
+
+# 2. Géneros en las 20 películas más recientes
+recent_genres <- movies %>%
+  filter(!is.na(mainGenre)) %>% 
+  arrange(desc(releaseDate)) %>%
+  head(20) %>%
+  count(mainGenre, sort = TRUE)
+
+print("Géneros en las 20 películas más recientes:")
+print(recent_genres)
+
+# 3. Gráfico del género predominante
+movies %>%
+  filter(!is.na(mainGenre)) %>% 
+  count(mainGenre) %>%
+  mutate(mainGenre = reorder(mainGenre, n)) %>%
+  ggplot(aes(x = mainGenre, y = n)) +
+  geom_col(fill = "steelblue") +
+  coord_flip() +
+  labs(title = "Cantidad de Películas por Género", x = "Género", y = "Cantidad")
+
+# 4. Películas más largas (Usando el título en inglés para evitar símbolos raros)
+longest_movies <- movies %>%
+  filter(!is.na(runtime), !is.na(mainGenre)) %>% # Quitamos pelis sin duración o género
+  arrange(desc(runtime)) %>%
+  select(title, mainGenre, runtime) %>% 
+  head(10)
+
+print("Top 10 películas más largas:")
+print(longest_movies)
+```
+
+
+
+
 # Ejercicio 4.7 - ¿Las películas de qué genero principal obtuvieron mayores ganancias?
+
+```{r}
+
+# Calculamos el ingreso promedio por género
+# Importante: Filtramos revenue > 0 para quitar películas que no reportaron ganancias
+movies %>%
+  filter(!is.na(mainGenre), !is.na(revenue), revenue > 0) %>%
+  group_by(mainGenre) %>%
+  summarise(
+    ingreso_promedio = mean(revenue, na.rm = TRUE)
+  ) %>%
+  arrange(desc(ingreso_promedio)) %>%
+  # Gráfico ordenado
+  ggplot(aes(x = reorder(mainGenre, ingreso_promedio), y = ingreso_promedio)) +
+  geom_col(fill = "#2E8B57") +
+  coord_flip() +
+  scale_y_continuous(labels = scales::comma) + # Para que los números se vean bonitos (ej. 1,000,000)
+  labs(
+    title = "Ingreso Promedio por Género Principal",
+    subtitle = "Considerando solo películas con ganancias reportadas (>0)",
+    x = "Género",
+    y = "Ingreso Promedio ($)"
+  )
+```
+
 
 # Ejercicio 4.8 - ¿La cantidad de actores influye en los ingresos de las películas?¿se han hecho
 películas con más actores en los últimos años?
@@ -339,8 +419,67 @@ No se observa una relación fuerte entre la cantidad de actores y los ingresos, 
 # Ejercicio 4.9 - ¿Es posible que la cantidad de hombres y mujeres en el reparto influya en la
 popularidad y los ingresos de las películas?
 
-# Ejercicio 4.10 - ¿Quiénes son los directores que hicieron las 20 películas mejor
-calificadas?
+
+```{r}
+# --- Ejercicio 4.9: ¿Influye la cantidad de hombres/mujeres en el éxito? ---
+
+# 1. Calculamos la correlación matemática (0 = no hay relación, 1 = relación total)
+# Usamos 'use="complete.obs"' para ignorar filas vacías
+cor_hombres_rev <- cor(movies$castMenAmount, movies$revenue, use = "complete.obs")
+cor_mujeres_rev <- cor(movies$castWomenAmount, movies$revenue, use = "complete.obs")
+cor_hombres_pop <- cor(movies$castMenAmount, movies$popularity, use = "complete.obs")
+cor_mujeres_pop <- cor(movies$castWomenAmount, movies$popularity, use = "complete.obs")
+
+# Imprimimos los resultados en consola
+print(paste("Correlación Cantidad Hombres vs Ingresos:", round(cor_hombres_rev, 3)))
+print(paste("Correlación Cantidad Mujeres vs Ingresos:", round(cor_mujeres_rev, 3)))
+
+# 2. Gráficos Visuales
+# Vamos a unir los datos para graficarlos juntos y comparar
+# (Esto crea un gráfico dividido en 2 paneles: Hombres y Mujeres)
+
+movies %>%
+  select(castMenAmount, castWomenAmount, revenue) %>%
+  pivot_longer(cols = c(castMenAmount, castWomenAmount), 
+               names_to = "Genero", 
+               values_to = "Cantidad") %>%
+  filter(revenue > 0, Cantidad < 50) %>% # Filtramos casos extremos para ver mejor
+  ggplot(aes(x = Cantidad, y = revenue, color = Genero)) +
+  geom_point(alpha = 0.3) +             # Puntos transparentes para ver la densidad
+  geom_smooth(method = "lm", color = "black") + # Línea de tendencia
+  facet_wrap(~Genero) +                 # Separa en dos gráficos
+  scale_y_continuous(labels = scales::comma) +
+  labs(
+    title = "Impacto de la cantidad de actores/actrices en los Ingresos",
+    x = "Cantidad de personas en el elenco",
+    y = "Ingresos ($)"
+  )
+```
+Al analizar los gráficos de dispersión, observamos una nube de puntos bastante dispersa en ambos paneles (hombres y mujeres). Si bien las líneas de tendencia muestran una inclinación positiva muy leve (es decir, a mayor elenco, podría haber un poco más de ingresos), la relación es débil.
+
+Podemos ver películas con elencos grandes (más de 30 personas) que tuvieron ingresos bajos, y películas con elencos pequeños que fueron éxitos millonarios.
+
+
+
+# Ejercicio 4.10 - ¿Quiénes son los directores que hicieron las 20 películas mejor calificadas?
+
+```{r}
+# --- Ejercicio 4.10: Directores de las 20 películas mejor calificadas ---
+
+# Seleccionamos las mejores películas
+# 1. Filtramos voteCount > 100 para asegurar que sean calificaciones confiables
+# 2. Ordenamos por promedio de votos (voteAvg) de mayor a menor
+top_directors <- movies %>%
+  filter(voteCount > 100) %>% 
+  arrange(desc(voteAvg)) %>%
+  head(20) %>%
+  select(director, title, voteAvg, voteCount) # Usamos 'title' para evitar símbolos raros
+
+print("Top 20 películas mejor calificadas y sus directores:")
+print(top_directors)
+```
+
+
 
 # Ejercicio 4.11 - ¿Cómo se correlacionan los presupuestos con los ingresos? ¿Los altos
 presupuestos significan altos ingresos? Haga los gráficos que necesite, histograma,
@@ -492,9 +631,5 @@ grafico_elenco_exit <- ggplot(movies, aes(x = actorsPopularity, y = revenue)) +
 print(grafico_elenco_exit)
 ```
 El análisis estadístico arroja un coeficiente de correlación de Pearson de 0.05, lo cual indica una correlación nula. Contrario a la creencia popular de que el "Star Power" impulsa la taquilla, los datos de esta muestra revelan que no existe ninguna relación lineal entre la popularidad del elenco y los ingresos generados. Como se observa en el gráfico, la línea de tendencia es completamente plana (horizontal), demostrando que películas con actores de alta popularidad no recaudaron necesariamente más que aquellas con elencos desconocidos. Esto sugiere que, al menos en este conjunto de datos depurado, la fama de los actores es irrelevante para predecir el éxito financiero.
-
-
-
-
 
 
