@@ -236,7 +236,21 @@ top_revenue
 Al examinar las 10 películas con mayores ingresos mundiales, Avatar se posiciona como la líder indiscutible con una recaudación superior a los 2.8 mil millones de dólares, seguida muy de cerca por Avengers: Endgame. Es interesante notar que, aunque el género de superhéroes y las franquicias establecidas dominan la lista (con múltiples entregas de Marvel y Star Wars), directores visionarios como James Cameron logran destacar con historias originales o de época (Avatar, Titanic). Además, al contrastar esta lista con la de presupuestos (Ejercicio 4.1), se evidencia que no siempre la película más cara es la más taquillera, aunque existe una clara tendencia de que las grandes superproducciones de efectos visuales son las que garantizan el éxito masivo en la taquilla global.
 
 
+
 # Ejercicio 4.3 - ¿Cuál es la película que más votos tuvo?
+```{r Mas_Votos}
+mas_votos <- movies %>%
+  # Seleccionar también el promedio para ver si es buena
+  select(originalTitle, voteCount, voteAvg) %>%
+  # Ordenar por cantidad de votos
+  arrange(desc(voteCount)) %>% 
+  # Solo ver la primera película
+  head(1)
+
+# Imprimir la película con más votos
+mas_votos
+```
+La película que registra la mayor cantidad de votos en el conjunto de datos es "Inception", acumulando un total de 30,788 evaluaciones por parte de los usuarios. Este alto nivel de participación, acompañado de una calificación promedio sobresaliente de 8.4, indica que la obra dirigida por Christopher Nolan no solo alcanzó una audiencia masiva, sino que logró un impacto cultural significativo que motivó a los espectadores a dejar su opinión, consolidándose como un referente del cine moderno tanto en popularidad como en calidad percibida.
 
 
 # Ejercicio 4.4 - ¿Cuál es la peor película de acuerdo a los votos de todos los usuarios?
