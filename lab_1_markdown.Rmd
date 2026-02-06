@@ -275,6 +275,25 @@ Al analizar las películas con menor calificación (aplicando un filtro de al me
 # Ejercicio 4.5 - ¿Cuántas películas se hicieron en cada año? ¿En qué año se hicieron más
 películas? Haga un gráfico de barras
 
+```{r}
+peliculas_anio <- movies %>%
+  filter(!is.na(releaseYear)) %>%
+  count(releaseYear, sort = TRUE)
+
+peliculas_anio
+
+ggplot(peliculas_anio, aes(x = factor(releaseYear), y = n)) +
+  geom_col(fill = "steelblue") +
+  labs(
+    title = "Cantidad de películas por año",
+    x = "Año de estreno",
+    y = "Cantidad de películas"
+  ) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5))
+```
+El gráfico muestra la cantidad de películas producidas por año. El año que más peliculas ha producido fue el 2025 con una cantidad inmensa de peliculas.
+
+
 # Ejercicio 4.6 - ¿Cuál es el género principal de las 20 películas más recientes? ¿Cuál es el género
 principal que predomina en el conjunto de datos? Represéntelo usando un gráfico. ¿A qué
 género principal pertenecen las películas más largas?
@@ -283,6 +302,33 @@ género principal pertenecen las películas más largas?
 
 # Ejercicio 4.8 - ¿La cantidad de actores influye en los ingresos de las películas?¿se han hecho
 películas con más actores en los últimos años?
+
+```{r}
+movies %>%
+  filter(!is.na(actorsAmount), !is.na(revenue)) %>%
+  ggplot(aes(x = actorsAmount, y = revenue)) +
+  geom_point(alpha = 0.4) +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  labs(
+    title = "Relación entre cantidad de actores e ingresos",
+    x = "Cantidad de actores",
+    y = "Ingresos"
+  )
+
+
+movies %>%
+  filter(!is.na(releaseYear), !is.na(actorsAmount)) %>%
+  group_by(releaseYear) %>%
+  summarise(promedio_actores = mean(actorsAmount, na.rm = TRUE)) %>%
+  ggplot(aes(x = releaseYear, y = promedio_actores)) +
+  geom_line(color = "darkgreen") +
+  labs(
+    title = "Promedio de actores por película a lo largo del tiempo",
+    x = "Año",
+    y = "Promedio de actores"
+  )
+```
+No se observa una relación fuerte entre la cantidad de actores y los ingresos, aunque películas con elencos más grandes tienden a tener mayores ingresos en algunos casos.
 
 # Ejercicio 4.9 - ¿Es posible que la cantidad de hombres y mujeres en el reparto influya en la
 popularidad y los ingresos de las películas?
@@ -295,14 +341,67 @@ presupuestos significan altos ingresos? Haga los gráficos que necesite, histogr
 diagrama de dispersión
 
 # Ejercicio 4.12 - ¿Se asocian ciertos meses de lanzamiento con mejores ingresos?
+```{r}
+movies <- movies %>%
+  mutate(
+    releaseDate = as.Date(releaseDate),
+    releaseMonth = format(releaseDate, "%m")
+  )
+
+movies %>%
+  filter(!is.na(releaseMonth), !is.na(revenue)) %>%
+  group_by(releaseMonth) %>%
+  summarise(ingreso_promedio = mean(revenue, na.rm = TRUE)) %>%
+  ggplot(aes(x = releaseMonth, y = ingreso_promedio)) +
+  geom_col(fill = "purple") +
+  labs(
+    title = "Ingreso promedio por mes de estreno",
+    x = "Mes",
+    y = "Ingreso promedio"
+  )
+```
+Como se puede observar, los meses de mayo y junio concentran mayores ingresos promedio, lo cual sugiere que el momento del estreno influye en el desempeño financiero de las películas al ser épocas donde las personas obtienen mucho tiempo libre tales como las vacaciones de medio año para colegios.
+
 
 # Ejercicio 4.13 - ¿En qué meses se han visto los lanzamientos con mejores ingresos?
 ¿cuantas películas, en promedio, se han lanzado por mes?
+
+```{r}
+movies %>%
+  filter(!is.na(releaseMonth)) %>%
+  group_by(releaseMonth) %>%
+  summarise(
+    peliculas = n(),
+    ingreso_promedio = mean(revenue, na.rm = TRUE)
+  ) %>%
+  arrange(desc(ingreso_promedio))
+```
+Al igual que en el inciso 4.12, Junio coincide como el mes con mayor demanda cinematográfica.
 
 # Ejercicio 4.14 - ¿Cómo se correlacionan las calificaciones con el éxito comercial?
 
 # Ejercicio 4.15 - ¿Qué estrategias de marketing, como videos promocionales o páginas
 oficiales, generan mejores resultados?
+
+```{r}
+movies <- movies |>
+  mutate(
+    tiene_homepage = ifelse(is.na(homePage) | homePage == "", "No", "Sí")
+  )
+
+movies |>
+  filter(!is.na(video)) |>
+  group_by(video, tiene_homepage) |>
+  summarise(
+    ingreso_promedio = mean(revenue, na.rm = TRUE),
+    popularidad_promedio = mean(popularity, na.rm = TRUE),
+    peliculas = n(),
+    .groups = "drop"
+  )
+```
+Podemos concluir que la existencia de una página oficial se asocia con mayores ingresos y niveles de popularidad.
+Asimismo, las películas que combinan video promocional y página oficial presentan la mayor popularidad promedio.
+Aunque algunos grupos presentan un número reducido de observaciones, la tendencia general sugiere que una estrategia de marketing digital más completa genera mejores resultados.
 
 # Ejercicio 4.16 - ¿La popularidad del elenco está directamente correlacionada con el éxito
 de taquilla?
