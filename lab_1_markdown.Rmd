@@ -423,7 +423,27 @@ movies %>%
 ```
 Al igual que en el inciso 4.12, Junio coincide como el mes con mayor demanda cinematográfica.
 
+
 # Ejercicio 4.14 - ¿Cómo se correlacionan las calificaciones con el éxito comercial?
+```{r}
+# Correlacion numerica para ver si van de la mano o no
+cor_calif_ingreso <- cor(movies$voteAvg, movies$revenue, use = "complete.obs")
+print(paste("Coeficiente de correlación:", round(cor_calif_ingreso, 4)))
+
+# Grafico de dispersion
+grafico_exit_comercial <- ggplot(movies, aes(x = voteAvg, y = revenue)) +
+  geom_point(alpha = 0.3, color = "#8A2BE2") + 
+  geom_smooth(method = "lm", color = "black", se = FALSE) +
+  labs(title = "¿Las películas con mejor calificación ganan más dinero?",
+       subtitle = paste("Correlación de Pearson:", round(cor_calif_ingreso, 2)),
+       x = "Calificación Promedio (0-10)",
+       y = "Ingresos ($)") +
+  theme_minimal()
+
+print(grafico_exit_comercial)
+```
+El cálculo del coeficiente de correlación de Pearson arroja un valor de 0.23, lo cual evidencia una relación positiva débil entre la calidad percibida (calificación promedio) y el éxito comercial. Al observar el diagrama de dispersión, la nube de puntos no sigue un patrón lineal definido, sino que muestra una gran dispersión: existen numerosas películas con calificaciones excelentes (superiores a 8.0) que obtuvieron ingresos modestos, mientras que producciones con calificaciones promedio (entre 6.0 y 7.0) alcanzaron recaudaciones multimillonarias. Esto concluye que la valoración crítica de la audiencia no es un predictor fiable de la taquilla, y que el éxito financiero depende mayoritariamente de otros factores como el marketing, el presupuesto o la pertenencia a franquicias populares, más que de la "calidad" cinematográfica en sí misma.
+
 
 # Ejercicio 4.15 - ¿Qué estrategias de marketing, como videos promocionales o páginas
 oficiales, generan mejores resultados?
