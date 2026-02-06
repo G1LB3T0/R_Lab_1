@@ -199,6 +199,10 @@ freq_director
 freq_productora
 ```
 
+Para las variables cualitativas, se construyeron tablas de frecuencia únicamente para aquellas variables que presentan categorías repetidas y relevantes para el análisis estadístico, como idioma original, género, país de producción y presencia de video promocional. Variables como el id no fueron analizadas mediante tablas de frecuencia debido a que funcionan como identificadores.  
+
+Las tablas de frecuencia muestran una alta concentración en ciertos idiomas y países de producción, así como la dominancia de algunos géneros cinematográficos, lo que refleja patrones claros del mercado audiovisual.
+
 # Ejercicio 4 - Responder las siguientes preguntas:
 
 # Ejercicio 4.1 - ¿Cuáles son las 10 películas que contaron con más presupuesto?
