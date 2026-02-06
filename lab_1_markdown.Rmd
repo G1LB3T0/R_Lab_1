@@ -20,8 +20,18 @@ library(tidyr)
 library(nortest)
 ```
 
+```{r corregir-tipos}
+movies <- movies %>%
+  mutate(across(
+    c(popularity, budget, revenue, genresAmount, productionCoAmount,
+      productionCountriesAmount, voteCount, actorsAmount, castWomenAmount,
+      castMenAmount, releaseYear, runtime, voteAvg, actorsPopularity),
+    ~ as.numeric(.)
+  ))
+```
+
 # Ejercicio 1 - Haga una exploración rápida de sus datos, para eso haga un resumen de su conjunto
-de datos.
+#de datos.
 ```{r}
 # Dimensiones del DataSet
 dim(movies)
@@ -30,7 +40,8 @@ dim(movies)
 Para este primer ejercicio, utilizamos la función `dim()` para conocer el tamaño exacto de nuestra base de datos. 
 Como podemos observar en el resultado del código, el dataset tiene 19,883 filas por 28 columnas. Esto significa que contamos con información de 19,883 películas diferentes y, para cada una de ellas, tenemos 28 variables o características (como el presupuesto, el género, los ingresos, etc.) para analizar.
 
-# Ejercicio 2 - diga el tipo de cada una de las variables
+# Ejercicio 2 - Diga el tipo de cada una de las variables (cualitativa ordinal o nominal, cuantitativa
+#continua, cuantitativa discreta)
 
 
 # Clasificación de Variables
@@ -73,7 +84,7 @@ Como podemos observar en el resultado del código, el dataset tiene 19,883 filas
 movies_cualitativas <- c("id", "originalTitle", "originalLanguage", "title", "homePage", 
                    "video", "director", "genres", "productionCompany", 
                    "productionCompanyCountry", "productionCountry", 
-                   "actors", "actorsCharacter")
+                   "actors", "actorsCharacter", "releaseDate")
 
 movies_cuali <- movies[, movies_cualitativas]
 ```
@@ -83,31 +94,112 @@ movies_cuantitativas <- c("popularity", "budget", "revenue", "genresAmount",
                     "productionCoAmount", "productionCountriesAmount", 
                     "voteCount", "actorsAmount", "castWomenAmount", 
                     "castMenAmount", "releaseYear", "runtime", 
-                    "voteAvg", "actorsPopularity", "releaseDate")
+                    "voteAvg", "actorsPopularity")
 
 movies_cuanti <- movies[, movies_cuantitativas]
 ```
 
 
-# Ejercicio 3
+# Ejercicio 3 Investigue si las variables cuantitativas siguen una distribución normal y haga una
+#tabla de frecuencias de las variables cualitativas. Explique todos los resultados.
 ```{r}
-runtime_clean <- na.omit(movies$runtime)
-lillie.test(runtime_clean)
+resultados_lillie <- data.frame(
+  Variable = character(),
+  P_value = numeric(),
+  Normalidad = character()
+)
 
-ggplot(data.frame(runtime_clean), aes(x = runtime_clean)) +
-  geom_histogram(bins = 30, fill = "steelblue", color = "white") +
-  labs(
-    title = "Histograma de Runtime",
-    x = "Duración (minutos)",
-    y = "Frecuencia"
+
+for (var in movies_cuantitativas) {
+  x <- na.omit(movies[[var]])
+  
+  # Saltar variables no numéricas reales (como fechas)
+  if (!is.numeric(x)) next
+  
+  test <- nortest::lillie.test(x)
+
+  
+  resultados_lillie <- rbind(
+    resultados_lillie,
+    data.frame(
+      Variable = var,
+      P_value = test$p.value,
+      Normalidad = ifelse(test$p.value > 0.05, "Sí", "No")
+    )
   )
+}
 
-ggplot(data.frame(runtime_clean), aes(y = runtime_clean)) +
-  geom_boxplot(fill = "tomato") +
-  labs(
-    title = "Diagrama de Bigotes de Runtime",
-    y = "Duración (minutos)"
-  )
-
+resultados_lillie
 ```
+```{r histograma}
+movies |>
+  select(all_of(movies_cuantitativas)) |>
+  pivot_longer(cols = everything(),
+               names_to = "variable",
+               values_to = "valor") |>
+  filter(!is.na(valor)) |>
+  ggplot(aes(x = valor)) +
+  geom_histogram(bins = 30, fill = "steelblue", color = "white") +
+  facet_wrap(~variable, scales = "free") +
+  labs(title = "Histogramas de Variables Cuantitativas")
+```
+
+```{r}
+
+movies |>
+  select(all_of(movies_cuantitativas)) |>
+  pivot_longer(cols = everything(),
+               names_to = "variable",
+               values_to = "valor") |>
+  filter(!is.na(valor)) |>
+  ggplot(aes(y = valor)) +
+  geom_boxplot(fill = "tomato") +
+  facet_wrap(~variable, scales = "free") +
+  labs(title = "Diagramas de Bigotes de Variables Cuantitativas")
+```
+
+
+```{r}
+# Idioma original
+freq_idioma <- movies %>%
+  count(originalLanguage, sort = TRUE)
+
+# Video promocional
+freq_video <- movies %>%
+  count(video, sort = TRUE)
+
+# Géneros
+freq_generos <- movies %>%
+  count(genres, sort = TRUE)
+
+# País de producción
+freq_pais <- movies %>%
+  count(productionCountry, sort = TRUE)
+
+# País de la productora
+freq_pais_prod <- movies %>%
+  count(productionCompanyCountry, sort = TRUE)
+
+# Directores (Top 10)
+freq_director <- movies %>%
+  count(director, sort = TRUE) %>%
+  head(10)
+
+# Productoras (Top 10)
+freq_productora <- movies %>%
+  count(productionCompany, sort = TRUE) %>%
+  head(10)
+
+freq_idioma
+freq_video
+freq_generos
+freq_pais
+freq_pais_prod
+freq_director
+freq_productora
+```
+
+
+
+
 
