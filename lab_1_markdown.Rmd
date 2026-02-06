@@ -220,8 +220,24 @@ Al analizar las 10 películas con mayor presupuesto, observamos que el ranking e
 
 
 # Ejercicio 4.2 - ¿Cuáles son las 10 películas que más ingresos tuvieron?
+```{r Top_Revenue}
+# Crear una variable para el top 10 de ingresos
+top_revenue <- movies %>%
+  # Ordenar por ingresos
+  arrange(desc(revenue)) %>%
+  # Seleccionar solo nombre y dinero (para no ver 28 columnas)
+  select(originalTitle, revenue) %>%
+  # Solo ver los primeros 10
+  head(10)
+
+# Mostrar la tabla
+top_revenue
+```
+Al examinar las 10 películas con mayores ingresos mundiales, Avatar se posiciona como la líder indiscutible con una recaudación superior a los 2.8 mil millones de dólares, seguida muy de cerca por Avengers: Endgame. Es interesante notar que, aunque el género de superhéroes y las franquicias establecidas dominan la lista (con múltiples entregas de Marvel y Star Wars), directores visionarios como James Cameron logran destacar con historias originales o de época (Avatar, Titanic). Además, al contrastar esta lista con la de presupuestos (Ejercicio 4.1), se evidencia que no siempre la película más cara es la más taquillera, aunque existe una clara tendencia de que las grandes superproducciones de efectos visuales son las que garantizan el éxito masivo en la taquilla global.
+
 
 # Ejercicio 4.3 - ¿Cuál es la película que más votos tuvo?
+
 
 # Ejercicio 4.4 - ¿Cuál es la peor película de acuerdo a los votos de todos los usuarios?
 
