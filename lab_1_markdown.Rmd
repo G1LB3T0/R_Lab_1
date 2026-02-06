@@ -343,6 +343,47 @@ calificadas?
 # Ejercicio 4.11 - ¿Cómo se correlacionan los presupuestos con los ingresos? ¿Los altos
 presupuestos significan altos ingresos? Haga los gráficos que necesite, histograma,
 diagrama de dispersión
+```{r}
+# Correlacion numerica
+correlacion <- cor(movies$budget, movies$revenue, use = "complete.obs")
+print(paste("Coeficiente de correlación:", round(correlacion, 4)))
+
+# Diagrama de dispersión 
+grafico_dispersion <- ggplot(movies, aes(x = budget, y = revenue)) +
+  # Color verde para los puntos
+  geom_point(alpha = 0.5, color = "#2E8B57") +  
+  # Línea de tendencia roja
+  geom_smooth(method = "lm", color = "red", se = FALSE) + 
+  labs(title = "¿Los altos presupuestos significan altos ingresos?",
+       subtitle = paste("Correlación de Pearson:", round(correlacion, 2)),
+       x = "Presupuesto (Budget)",
+       y = "Ingresos (Revenue)") +
+  theme_minimal()
+
+# Histograma de presupuestos
+hist_presupuesto <- ggplot(movies, aes(x = budget)) +
+  geom_histogram(bins = 40, fill = "#4682B4", color = "white") + 
+  labs(title = "Distribución de los Presupuestos",
+       x = "Presupuesto ($)",
+       y = "Cantidad de Películas") +
+  theme_minimal()
+
+# Histograma de Ingresos
+hist_ingresos <- ggplot(movies, aes(x = revenue)) +
+  geom_histogram(bins = 40, fill = "#E9967A", color = "white") + 
+  labs(title = "Distribución de los Ingresos",
+       x = "Ingresos ($)",
+       y = "Cantidad de Películas") +
+  theme_minimal()
+
+# Mostrar gráficos
+print(grafico_dispersion)
+print(hist_presupuesto)
+print(hist_ingresos)
+
+```
+El análisis estadístico arroja un coeficiente de correlación de Pearson de 0.78, lo que confirma una relación positiva fuerte entre el presupuesto y los ingresos. Como se visualiza en el diagrama de dispersión, existe una tendencia clara donde una mayor inversión suele traducirse en mayores ganancias; sin embargo, la dispersión de los puntos indica que el éxito no está garantizado, existiendo películas de alto costo con retornos inferiores a lo esperado. Por su parte, los histogramas revelan que ambas variables presentan una distribución extremadamente sesgada a la derecha (no normal), lo que demuestra que la industria cinematográfica se compone mayoritariamente de producciones de bajo y mediano presupuesto, siendo las "superproducciones" multimillonarias casos excepcionales y atípicos dentro del conjunto de datos.
+
 
 # Ejercicio 4.12 - ¿Se asocian ciertos meses de lanzamiento con mejores ingresos?
 ```{r}
